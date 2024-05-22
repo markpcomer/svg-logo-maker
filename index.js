@@ -1,9 +1,7 @@
 const inquirer = require("inquirer");
 const fs = require('fs');
-const { writeFile } = require(fs/promises);
 const { Triangle, Circle, Square } = require('./shapes.js');
 const SVG = require('./svg.js');
-const { error } = require("console");
 
     inquirer
             .prompt ([
@@ -31,13 +29,31 @@ const { error } = require("console");
             ])
             .then((res) => {
                 if(res.shapeForm === 'Triangle'){
-                    const triangle  = new Triangle(res.shapeText, res.textColor, res.textColor);
+                    const triangle = new Triangle(res.shapeText, res.textColor, res.shapeColor);
                     fs.writeFile('./examples/logo.svg', triangle.render(),
                         (error) => {
                             if(error){
-                                console.log("Error");
+                                console.log(error);
                             }
-                        
-                        }) 
-                }
+                        }); 
+                } else if (res.shapeForm === 'Circle'){
+                    const circle = new Circle(res.shapeText, res.textColor, res.shapeColor);
+                    fs.writeFile('./examples/logo.svg', circle.render(),
+                        (error) => {
+                            if(error) {
+                                console.log(error);
+                            }
+                        });
+                } else {
+                    const square = new Square(res.shapeText, res.textColor, res.shapeColor);
+                    fs.writeFile('./examples/logo.svg', square.render(),
+                        (error) => {
+                            if(error) {
+                                console.log(error);
+                            }
+                        }
+                    )}
+            })
+            .then(() => {
+                console.log("Your logo.svg has been generated!");
             })
