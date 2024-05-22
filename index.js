@@ -1,7 +1,7 @@
-const inquirer = require("inquirer");
+const { Triangle, Circle, Square } = require('./lib/shapes.js');
+const inquirer = require('inquirer');
 const fs = require('fs');
-const { Triangle, Circle, Square } = require('./shapes.js');
-const SVG = require('./svg.js');
+const SVG = require('./lib/svg.js');
 
     inquirer
             .prompt ([
@@ -55,5 +55,5 @@ const SVG = require('./svg.js');
                     )}
             })
             .then(() => {
-                console.log("Your logo.svg has been generated!");
+                console.log("Generated logo.svg");
             })
