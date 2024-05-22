@@ -1,10 +1,12 @@
-const { Triangle, Circle, Square } = require('./lib/shapes.js');
-const inquirer = require('inquirer');
-const fs = require('fs');
-const SVG = require('./lib/svg.js');
+const { Triangle, Circle, Square } = require("./lib/shapes");
+const inquirer = require("inquirer");
+const fs = require("fs");
+const { writeFile } = require("fs/promises");
+const SVG = require("./lib/svg");
+const { run } = require("jest");
 
-    inquirer
-            .prompt ([
+function init() {
+            inquirer.prompt ([
                 {
                     type: 'input',
                     name: 'shapeText',
@@ -27,47 +29,31 @@ const SVG = require('./lib/svg.js');
                     message: "Please enter your shape's color. Enter a color keyword or hexidecimal number.",
                 },
             ])
-            .then((res) => {
+            .then(({shapeText, textColor, shapeForm, shapeColor}) => {
                 let shape;
-                if(res.shapeForm === 'Triangle'){
-                    const triangle = new Triangle();
-                    fs.writeFile('./examples/logo.svg', triangle.render(),
-                        (error) => {
-                            if(error){
-                                console.log(error);
-                            }
-                        }); 
-                } else if (res.shapeForm === 'Circle'){
-                    const circle = new Circle();
-                    fs.writeFile('./examples/logo.svg', circle.render(),
-                        (error) => {
-                            if(error) {
-                                console.log(error);
-                            }
-                        });
+                if (shapeForm === 'Triangle'){
+                    shape = new Triangle();
+                } else if (shapeForm === 'Circle'){
+                    shape = new Circle();
                 } else {
-                    const square = new Square();
-                    fs.writeFile('./examples/logo.svg', square.render(),
-                        (error) => {
-                            if(error) {
-                                console.log(error);
-                            }
-                        }
-                    )}
+                    shape = new Square();
+                }
+              shape.setColor(shapeColor);
+              let finalSVG = new SVG();
+              finalSVG.setText(shapeText, textColor);
+              finalSVG.setShape(shape);
+                writeFile("logo.svg", finalSVG.render());
             })
             .then(() => {
                 console.log("Generated logo.svg");
             })
-/*
-let shape;
-if (shapeForm ==='Triangle'){
-    shape = new Triangle();
-} else if (shapeForm === 'Circle'){
-    shape = new Circle();
-} else {
-    shape = new Square();
+            .catch((error) => {
+                console.error('An error has occured:', error);
+                
+            })
 }
-shape.setColor(shapeColor);
 
 
-*/ 
+init();
+
+module.exports = {};
