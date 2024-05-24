@@ -1,10 +1,12 @@
+// Importing classes from shapes.js, inquirer, fs
+
 const { Triangle, Circle, Square } = require("./lib/shapes");
 const inquirer = require("inquirer");
 const fs = require("fs");
 const { writeFile } = require("fs/promises");
 const SVG = require("./lib/svg");
-const { run } = require("jest");
 
+// Command line prompts for SVG logo choices
 function init() {
             inquirer.prompt ([
                 {
@@ -29,6 +31,7 @@ function init() {
                     message: "Please enter your shape's color. Enter a color keyword or hexidecimal number.",
                 },
             ])
+            // 
             .then(({shapeText, textColor, shapeForm, shapeColor}) => {
                 let shape;
                 if (shapeForm === 'Triangle'){
@@ -42,7 +45,8 @@ function init() {
               let finalSVG = new SVG();
               finalSVG.setText(shapeText, textColor);
               finalSVG.setShape(shape);
-                writeFile("logo.svg", finalSVG.render());
+              // Writes SVG file using user answer from above prompts
+              writeFile("logo.svg", finalSVG.render());
             })
             .then(() => {
                 console.log("Generated logo.svg");
