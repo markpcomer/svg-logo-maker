@@ -1,8 +1,7 @@
-// Importing classes from shapes.js, inquirer, fs
+// Importing inquirer, and classes from shapes.js & svg.js, 
 
 const { Triangle, Circle, Square } = require("./lib/shapes");
 const inquirer = require("inquirer");
-const fs = require("fs");
 const { writeFile } = require("fs/promises");
 const SVG = require("./lib/svg");
 
@@ -33,27 +32,29 @@ function init() {
             ])
             // 
             .then(({shapeText, textColor, shapeForm, shapeColor}) => {
-                let shape;
-                if (shapeForm === 'Triangle'){
-                    shape = new Triangle();
-                } else if (shapeForm === 'Circle'){
-                    shape = new Circle();
-                } else {
-                    shape = new Square();
+                // Function creates SVG logo according to user choices
+                function createSVG () {
+                    let shape;
+                    if (shapeForm === 'Triangle'){
+                        shape = new Triangle();
+                    } else if (shapeForm === 'Circle'){
+                        shape = new Circle();
+                    } else {
+                        shape = new Square();
+                    }
+                    shape.setColor(shapeColor);
+                    let finalSVG = new SVG();
+                    finalSVG.setText(shapeText, textColor);
+                    finalSVG.setShape(shape);
+                    writeFile("logo.svg", finalSVG.render(), (error) => {
+                        if (error) {
+                            console.error('An error has occured:', error);
+                        } else {
+                            console.log("Generated logo.svg");
+                        }
+                    });                    
                 }
-              shape.setColor(shapeColor);
-              let finalSVG = new SVG();
-              finalSVG.setText(shapeText, textColor);
-              finalSVG.setShape(shape);
-              // Writes SVG file using user answer from above prompts
-              writeFile("logo.svg", finalSVG.render());
-            })
-            .then(() => {
-                console.log("Generated logo.svg");
-            })
-            .catch((error) => {
-                console.error('An error has occured:', error);
-                
+                createSVG();
             })
 }
 
