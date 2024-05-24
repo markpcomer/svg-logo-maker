@@ -34,6 +34,7 @@ async function promptUser() {
     // Function to create SVG logo according to user choices
 async function createSVG({ shapeText, textColor, shapeForm, shapeColor }) {
     let shape;
+    // Determines which shape, based upon user choice
     if (shapeForm === 'Triangle'){
         shape = new Triangle();
     } else if (shapeForm === 'Circle'){
@@ -41,12 +42,14 @@ async function createSVG({ shapeText, textColor, shapeForm, shapeColor }) {
     } else {
         shape = new Square();
     }
+    // Sets SVG color, creates new SVG, sets text & text color, sets SVG shape
     shape.setColor(shapeColor);
     let finalSVG = new SVG();
     finalSVG.setText(shapeText, textColor);
     finalSVG.setShape(shape);    
 
     try {
+        // Writes SVG to logo.svg file
         await writeFile("logo.svg", finalSVG.render());
         console.log("Generated logo.svg");
     } catch (error) {
@@ -55,6 +58,7 @@ async function createSVG({ shapeText, textColor, shapeForm, shapeColor }) {
 }
 
 // Function to initialize the application
+// Prompts questions for user, and creates SVG
 async function init(){
     try {
         const userChoices = await promptUser();
