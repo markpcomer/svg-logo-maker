@@ -30,6 +30,8 @@ In the command line, you will be asked for what initials you would like, followe
 
 ## Video-Walkthrough
 
+https://drive.google.com/file/d/19VqFvQHt0-FVGvawC7a38X8ozn-Ccpgc/view?usp=sharing
+
 ## Github
 
 https://github.com/markpcomer/svg-logo-maker
